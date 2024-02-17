@@ -96,3 +96,34 @@ dist/
 .prettierignore
 .DS_Store
 ```
+
+## 配置提交规范
+
+### 安装 lint-staged
+
+- 安装依赖
+
+```
+$ npm install --save-dev lint-staged
+```
+
+- 配置
+
+```json
+// .lintstagedrc.json
+{
+  "*.{js,jsx,ts,tsx}": ["npm run eslint:lint"],
+  "*.{scss,less,styl,html}": ["prettier --write"],
+  "package.json": ["prettier --write"]
+}
+```
+
+```json
+// package.json
+{
+  "scripts": {
+    "eslint:lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 10 --color",
+    "eslint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 10 --color --fix"
+  }
+}
+```
