@@ -222,3 +222,116 @@ module.exports = {
   ],
 };
 ```
+
+## 配置react-router
+
+### 去掉airbnb规则
+
+<!-- 因为airbnb规则导致很多eslint问题,需去掉该规则 -->
+
+- 去掉eslint-config-airbnb-base
+
+```shell
+$ npm uninstall eslint-config-airbnb-base
+```
+
+- 去掉eslint配置信息
+
+```json
+// 1. .eslintrc.cjs
+
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:react-hooks/recommended"
+    // 'airbnb-base', // 去掉airbnb-base规则
+  ]
+  // "overrides": [] // 去掉overrides
+}
+```
+
+### 安装依赖
+
+- 安装react-router
+
+```shell
+$ npm install react-router-dom
+```
+
+- src/pages配置页面A/B
+
+```tsx
+// PageA
+const PageA = () => {
+  return <div>PageA</div>;
+};
+
+export default PageA;
+```
+
+```tsx
+// PageB
+const PageB = () => {
+  return <div>PageB</div>;
+};
+
+export default PageB;
+```
+
+- src/routes/routes配置路由
+
+```ts
+import { lazy } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+
+const PageA = lazy(() => import('../pages/pageA'));
+const PageB = lazy(() => import('../pages/pageB'));
+
+export const routers = createBrowserRouter([
+  {
+    path: '/',
+    element: <PageA />,
+  },
+  {
+    path: '/a',
+    element: <PageA />,
+  },
+  {
+    path: '/b',
+    element: <PageB />,
+  },
+]);
+
+export default routers;
+
+```
+
+- src/routes/index导出路由
+
+```tsx
+import { RouterProvider } from 'react-router-dom';
+import { routers } from './routes';
+
+const RouterView = () => <RouterProvider router={routers} />;
+
+export default RouterView;
+```
+
+- 修改main.tsx入口
+
+```tsx
+import RouterView from './routes/index.tsx';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <RouterView />
+  </React.StrictMode>,
+);
+```
+
+## 安装sass
+
+```shell
+$ npm install -D sass
+```
