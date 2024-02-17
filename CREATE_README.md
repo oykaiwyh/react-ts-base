@@ -251,6 +251,39 @@ $ npm uninstall eslint-config-airbnb-base
 }
 ```
 
+## 配置alias
+
+- 配置tsconfig.json
+
+```json
+// config
+{
+  "compilerOptions": {
+    // config
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+- 配置vite.config.ts
+
+```ts
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+
+export default defineConfig({
+  // ....other settings
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+    extensions: ['.js', '.json', '.ts', '.tsx'],
+  },
+});
+```
+
 ### 安装依赖
 
 - 安装react-router
