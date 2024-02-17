@@ -9,13 +9,17 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "eslint:lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 10 --color",
     "eslint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 10 --color --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky",
+    "commitlint": "commitlint --edit"
   },
   "dependencies": {
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.2",
+    "@vitejs/plugin-react-swc": "^3.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "vite": "^5.0.8",
-    "@vitejs/plugin-react-swc": "^3.5.0"
+    "vite": "^5.0.8"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",
@@ -27,7 +31,9 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5",
     "typescript": "^5.2.2"
   }
 }

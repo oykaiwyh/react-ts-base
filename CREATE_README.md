@@ -99,12 +99,12 @@ dist/
 
 ## 配置提交规范
 
-### 安装 lint-staged
+### 安装 lint-staged 和 prettier
 
 - 安装依赖
 
 ```
-$ npm install --save-dev lint-staged
+$ npm install --save-dev lint-staged prettier
 ```
 
 - 配置
@@ -126,4 +126,99 @@ $ npm install --save-dev lint-staged
     "eslint:fix": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 10 --color --fix"
   }
 }
+```
+
+### 配置 husky 和 commitlint
+
+#### 配置 [husky](https://typicode.github.io/husky/get-started.html)
+
+- 安装依赖
+
+```shell
+$ npm i -D husky
+
+```
+
+- 初始化 husky
+
+```shell
+# 最新版的 husky不需要再去额外的配置了，直接 init即可
+$ npx husky init
+```
+
+- 修改 .husky/pre-commit 配置
+
+```
+npx lint-staged
+```
+
+#### 配置 [commitlint](https://commitlint.js.org/#/guides-local-setup)
+
+- 安装 commitlint
+
+```shell
+$ npm install @commitlint/cli @commitlint/config-conventional
+$ echo "module.exports = {extends: ['@commitlint/config-conventional']}" > commitlint.config.js
+
+```
+
+```shell
+$ npm pkg set scripts.commitlint="commitlint --edit"
+$ echo "npm run commitlint \${1}" > .husky/commit-msg
+```
+
+- 将 commitlint.config.js 改名为 .commitlintrc.cjs
+
+- 如还在 eslint 报错，请将 .commitlintrc.cjs 加入 配置中
+
+```json
+// .eslintrc.cjs
+{
+  "parserOptions": {
+    "project": ["./tsconfig.json", "./tsconfig.node.json", ".commitlintrc.cjs"]
+  }
+}
+```
+
+- 配置
+
+```javascript
+module.exports = {
+  extends: ['@commitlint/config-conventional'],
+  rules: {
+    'type-enum': [0],
+    'lint-type': [2, 'always'],
+  },
+  plugins: [
+    {
+      rules: {
+        'lint-type': ({ header }) => {
+          //   [
+          //     'bug', // 此项特别针对bug号，用于向测试反馈bug列表的bug修改情况
+          //     'feat', // 新功能（feature）
+          //     'fix', // 修补bug
+          //     'docs', // 文档（documentation）
+          //     'style', // 格式（不影响代码运行的变动）
+          //     'refactor', // 重构（即不是新增功能，也不是修改bug的代码变动）
+          //     'test', // 增加测试
+          //     'chore', // 构建过程或辅助工具的变动
+          //     'revert', // feat(pencil): add ‘graphiteWidth’ option (撤销之前的commit)
+          //     'merge', // 合并分支， 例如： merge（前端页面）： feature-xxxx修改线程地址
+          //   ],
+          const commitRegex =
+            // /^(?:build|chore|ci|docs|feat|fix|refactor|revert|style|test)\s*:\s*.+$/;
+            /^(?:build|chore|ci|docs|feat|fix|refactor|revert|style|test)\s*:/;
+          if (commitRegex.test(header)) {
+            return [true, ''];
+          } else {
+            return [
+              false,
+              'commit前缀为: build|chore|ci|docs|feat|fix|refactor|revert|style|test: ',
+            ];
+          }
+        },
+      },
+    },
+  ],
+};
 ```
