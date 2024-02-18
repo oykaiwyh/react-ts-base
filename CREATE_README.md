@@ -390,6 +390,55 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 );
 ```
 
+## 配置alias
+
+- 安装依赖
+
+```shell
+$ npm install eslint-import-resolver-alias -D
+```
+
+- 配置.eslintrc.cjs
+
+```json
+{
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".js", ".jsx", ".tsx"]
+      }
+    }
+  }
+}
+```
+
+- 配置vite.config.ts
+
+```ts
+{
+  "compilerOptions": {
+    // config
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+- 配置tsconfig.json
+
+```json
+{
+  "compilerOptions": {
+    // config
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
 ## 安装sass
 
 ```shell
