@@ -1,5 +1,7 @@
 # Create Project
 
+> 这个是react + ts + 基本eslint规则(去掉airbnb规则)的初始项目
+
 ## Expanding the ESLint configuration
 
 ### replace extends
