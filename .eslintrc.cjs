@@ -5,6 +5,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:react-hooks/recommended',
+    'plugin:import/typescript',
     'airbnb-base',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
@@ -21,30 +22,35 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-  },
-  overrides: [
-    {
-      files: ['*.ts', '*.tsx'],
-      extends: ['airbnb-base'],
-      plugins: ['import'],
-      rules: {
-        'import/no-unresolved': [
-          'error',
-          {
-            ignore: ['/vite.svg'],
-            commonjs: true,
-            amd: true,
-          },
-        ], // 忽略对/public/目录下资源的未解决引用警告
-        'import/no-absolute-path': [
-          'error',
-          {
-            ignore: ['/vite.svg'],
-            commonjs: true,
-            amd: true,
-          },
-        ], // 忽略对/public/目录下资源的未解决引用警告
+    '@typescript-eslint/no-explicit-any': ['warn'],
+    '@typescript-eslint/no-unsafe-return': ['warn'],
+    '@typescript-eslint/no-unsafe-assignment': ['warn'],
+    'import/no-unresolved': [
+      'error',
+      {
+        ignore: ['/vite.svg'],
+        commonjs: true,
+        amd: true,
       },
-    },
-  ],
+    ],
+    'import/no-absolute-path': [
+      'error',
+      {
+        ignore: ['/vite.svg'],
+        commonjs: true,
+        amd: true,
+      },
+    ],
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        mjs: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
+  },
 };

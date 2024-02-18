@@ -231,3 +231,167 @@ module.exports = {
   ],
 };
 ```
+
+## 配置react-router
+
+### 安装依赖
+
+```shell
+$ npm install react-router-dom
+```
+
+### 配置
+
+- 建立pages/pageA/index.tsx,pages/pageB/index.tsx
+
+```tsx
+// pages/pageA/index.tsx
+const PageA = () => {
+  return <div>PageA</div>;
+};
+
+export default PageA;
+```
+
+```tsx
+// pages/pageB/index.tsx
+const PageB = () => {
+  return <div>PageB</div>;
+};
+
+export default PageB;
+```
+
+- 建立routes/routes.tsx
+
+```tsx
+import { lazy } from 'react';
+import { createBrowserRouter } from 'react-router-dom';
+
+const PageA = lazy(() => import('../pages/pageA'));
+const PageB = lazy(() => import('../pages/pageB'));
+
+export const routers = createBrowserRouter([
+  {
+    path: '/',
+    element: <PageA />,
+  },
+  {
+    path: '/a',
+    element: <PageA />,
+  },
+  {
+    path: '/b',
+    element: <PageB />,
+  },
+]);
+
+export default routers;
+```
+
+- 建立routes/index.tsx
+
+```tsx
+import { RouterProvider } from 'react-router-dom';
+import { routers } from './routes';
+
+const RouterView = () => <RouterProvider router={routers} />;
+
+export default RouterView;
+```
+
+### 解决 airbnb规则导致的 eslint警告
+
+#### Unable to resolve path to module "xxx"
+
+- 安装eslint-import-resolver-typescript
+
+```shell
+$ npm install eslint-import-resolver-typescript  -D
+```
+
+- 修改.eslintrc.cjs配置
+
+```json
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:react-hooks/recommended",
+    "plugin:import/typescript", // 配置
+    "airbnb-base"
+  ]
+}
+```
+
+#### Missing file extension "tsx" from "xxx"
+
+修改方式一：
+
+- 将 overrides中的 import/no-unresolved 和 import/no-absolute-path 放到rules中
+- 注释 .eslintrc.cjs 中的 overrides
+
+- 配置规则覆盖[airbnb的默认规则](https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/imports.js#L139)
+
+```json
+{
+  "rules": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "mjs": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  }
+}
+```
+
+修改方式二：
+
+- 配置规则覆盖[airbnb的默认规则](https://github.com/airbnb/javascript/blob/master/packages/eslint-config-airbnb-base/rules/imports.js#L139)将其放入overrides的rules中
+
+```json
+{
+  "rules": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "mjs": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
+  }
+}
+```
+
+### 修改入口文件 main.tsx
+
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+// import App from './App';
+import './index.css';
+import RouterView from './routes';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    {/* <App /> */}
+    <RouterView></RouterView>
+  </React.StrictMode>,
+);
+```
+
+## 安装sass
+
+```shell
+$ npm install -D sass
+```
