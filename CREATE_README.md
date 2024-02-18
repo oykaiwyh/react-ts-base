@@ -148,8 +148,17 @@ $ npx husky init
 
 - 修改 .husky/pre-commit 配置
 
+```shell
+npm run lint-staged
 ```
-npx lint-staged
+
+```json
+//package.json
+{
+  "scripts": {
+    "lint-staged": "npx lint-staged -v true"
+  }
+}
 ```
 
 #### 配置 [commitlint](https://commitlint.js.org/#/guides-local-setup)

@@ -10,9 +10,8 @@ interface IApp {
 }
 
 function App({ name }: IApp) {
-  console.log(name);
-
   const [count, setCount] = useState(0);
+  console.log(name);
 
   return (
     <>
